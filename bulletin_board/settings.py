@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'bulletin_board.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'django',
         'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'PASSWORD': '542525Zz',
         'HOST': 'localhost',
-        'PORT': 5432,
+        'PORT': 5433,
     }
 }
 
