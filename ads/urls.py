@@ -10,5 +10,5 @@ urlpatterns = [
     # path('/<int:pk>/delete/', views.AdsDeleteView.as_view()),
     # path('/<int:pk>/upload_image/', views.AdsImageView.as_view()),
 
-    path('user/', include('users.urls')),
+    path('user', include('users.urls')),
 ]
