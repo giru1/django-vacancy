@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 
@@ -16,7 +16,7 @@ class Location(models.Model):
         verbose_name_plural = 'Локации'
 
 
-class User(models.Model):
+class User(AbstractUser):
     ROLES = [
         ("member", "Пользователь"),
         ("moderator", "Модератор"),
