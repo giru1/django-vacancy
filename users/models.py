@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Location(models.Model):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=350)
     lat = models.DecimalField(decimal_places=4, max_digits=6, null=True)
     lng = models.DecimalField(decimal_places=4, max_digits=6, null=True)
 
