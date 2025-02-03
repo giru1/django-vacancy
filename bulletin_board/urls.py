@@ -25,17 +25,23 @@ router = SimpleRouter()
 router.register(r'location', LocationViewSet)
 router.register(r'category', CategoryViewSet)
 router.register(r'ads', AdsViewSet)
+# router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin', admin.site.urls),
     path('api-auth', include('rest_framework.urls')),
     path('', index),
-
     path('ads', include('ads.urls')),
-    path('users', include('users.urls')),
+    path('users/', include('users.urls')),
 
 ]
 urlpatterns += router.urls
 
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+       import debug_toolbar
+       urlpatterns = [
+           path('__debug__/', include(debug_toolbar.urls)),
+       ] + urlpatterns + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
