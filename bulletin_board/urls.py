@@ -21,11 +21,6 @@ from rest_framework.routers import SimpleRouter
 from ads.views import index, CategoryViewSet
 from users.views import LocationViewSet
 
-router = SimpleRouter()
-router.register(r'location', LocationViewSet)
-router.register(r'category', CategoryViewSet)
-# router.register(r'ads', AdsViewSet)
-# router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('admin', admin.site.urls),
