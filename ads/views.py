@@ -7,12 +7,11 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from ads.models import Category, Ads
 from ads.serializers import AdsSerializer, CategorySerializer
-from bulletin_board import settings
-from users.models import User
 
 
 def index(request):
@@ -28,6 +27,7 @@ def index(request):
 class AdsDetailView(RetrieveAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [IsAuthenticated]
 
 class AdsCreateView(CreateAPIView):
     queryset = Ads.objects.all()
@@ -40,11 +40,12 @@ class AdsUpdateView(UpdateAPIView):
 class AdsDeleteView(DestroyAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
-
+    permission_classes = [IsAuthenticated]
 
 class AdsListView(ListAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [IsAuthenticated]
 
     def list(self, request, *args, **kwargs):
         if cats := request.GET.getlist("cat", None):
@@ -63,7 +64,6 @@ class AdsListView(ListAPIView):
             self.queryset = self.queryset.filter(price__lte=price_to)
 
         return super().list(request, *args, **kwargs)
-
 
 @method_decorator(csrf_exempt, name='dispatch')
 class AdsImageView(UpdateView):
@@ -86,7 +86,6 @@ class AdsImageView(UpdateView):
             "image": self.object.image.url if self.object.image else None,
             "category": self.object.category.id,
         })
-
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
