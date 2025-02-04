@@ -35,6 +35,17 @@ class UserCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
         # exclude = ['locations']
 
+    def create(self, validated_data):
+        locations_data = validated_data.pop('locations', [])
+        user = User.objects.create(**validated_data)
+
+        # Сохраняем местоположения
+        user.locations.set(locations_data)
+        user.set_password(validated_data["password"])  # Убедитесь, что пароль устанавливается правильно
+        user.save()
+
+        return user
+
     # def is_valid(self, raise_exception=False):
     #     self._locations = self.initial_data.pop('locations', None)
     #     return super().is_valid(raise_exception=raise_exception)

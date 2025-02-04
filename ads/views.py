@@ -1,5 +1,5 @@
 import json
-
+from rest_framework import viewsets, status
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -8,7 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView, CreateView, UpdateView, DeleteView
 from rest_framework.viewsets import ModelViewSet
-
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from ads.models import Category, Ads
 from ads.serializers import AdsSerializer, CategorySerializer
 from bulletin_board import settings
@@ -21,7 +21,28 @@ def index(request):
     })
 
 
-class AdsViewSet(ModelViewSet):
+# class AdsListView(viewsets.ModelViewSet):
+#     queryset = Ads.objects.all()
+#     serializer_class = AdsSerializer
+
+class AdsDetailView(RetrieveAPIView):
+    queryset = Ads.objects.all()
+    serializer_class = AdsSerializer
+
+class AdsCreateView(CreateAPIView):
+    queryset = Ads.objects.all()
+    serializer_class = AdsSerializer
+
+class AdsUpdateView(UpdateAPIView):
+    queryset = Ads.objects.all()
+    serializer_class = AdsSerializer
+
+class AdsDeleteView(DestroyAPIView):
+    queryset = Ads.objects.all()
+    serializer_class = AdsSerializer
+
+
+class AdsListView(ListAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
 
