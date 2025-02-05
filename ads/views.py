@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 from ads.models import Category, Ads
+from ads.permissions import AdsPermission
 from ads.serializers import AdsSerializer, CategorySerializer
 
 
@@ -36,11 +37,12 @@ class AdsCreateView(CreateAPIView):
 class AdsUpdateView(UpdateAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [AdsPermission]
 
 class AdsDeleteView(DestroyAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AdsPermission]
 
 class AdsListView(ListAPIView):
     queryset = Ads.objects.all()
