@@ -1,4 +1,5 @@
-
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
 from django.db import models
 
 # Create your models here.
@@ -8,6 +9,7 @@ from users.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=10, unique=True, validators=[MinValueValidator(5)], null=True)
 
     def __str__(self):
         return self.name
