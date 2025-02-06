@@ -29,6 +29,8 @@ class User(AbstractUser):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=150)
     role = models.CharField(max_length=50, choices=ROLES, default='member')
+    birth_date = models.DateField(null=True, blank=True)
+    email = models.EmailField(unique=True)
     age = models.PositiveIntegerField()
     locations = models.ManyToManyField(Location)
 

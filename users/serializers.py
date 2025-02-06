@@ -1,4 +1,9 @@
+import re
+from datetime import date
+
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from users.models import User, Location
 
@@ -20,6 +25,17 @@ class UserDetailSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+def validate_email(value):
+    if re.search(r'@rambler\.ru$', value.lower()):
+        raise ValidationError('Registration with rambler.ru email is not allowed.')
+    return value
+
+def validate_birth_date(value):
+    today = date.today()
+    age = today.year - value.year - ((today.month, today.day) < (value.month, value.day))
+    if age < 9:
+        raise ValidationError('Users younger than 9 years old cannot register.')
+    return value
 
 class UserCreateSerializer(serializers.ModelSerializer):
 
@@ -29,6 +45,12 @@ class UserCreateSerializer(serializers.ModelSerializer):
         queryset=Location.objects.all(),  # Укажите queryset для получения местоположений
         slug_field="id"
     )
+    birth_date = serializers.DateField(
+        validators=[
+            validate_birth_date
+        ])
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all()), validate_email])
 
     class Meta:
         model = User
@@ -46,9 +68,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         return user
 
-    # def is_valid(self, raise_exception=False):
-    #     self._locations = self.initial_data.pop('locations', None)
-    #     return super().is_valid(raise_exception=raise_exception)
 
 
 class LocationSerializer(serializers.ModelSerializer):
