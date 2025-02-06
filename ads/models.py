@@ -19,10 +19,19 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
+def validate_price(value):
+    if value < 0:
+        raise ValidationError('Цена не может быть отрицательной')
+
+def validate_is_published(value):
+    if value:
+        raise ValidationError('Объявление не может быть опубликовано')
+
+
 class Ads(models.Model):
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, null=False, validators=[MinValueValidator(10)])
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    price = models.PositiveIntegerField(null=True)
+    price = models.PositiveIntegerField(null=True, validators=[MinValueValidator(0)])
     description = models.CharField(max_length=1000, null=True)
     is_published = models.BooleanField(default=False)
     image = models.ImageField(upload_to='ads/', null=True, blank=True)
