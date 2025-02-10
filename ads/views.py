@@ -21,10 +21,6 @@ def index(request):
     })
 
 
-# class AdsListView(viewsets.ModelViewSet):
-#     queryset = Ads.objects.all()
-#     serializer_class = AdsSerializer
-
 class AdsDetailView(RetrieveAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
