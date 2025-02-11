@@ -3,19 +3,22 @@ import pytest
 
 @pytest.fixture
 @pytest.mark.django_db
-def token(client, user):
+def token(client, django_user_model):
     username = "hr123"
     password  = "password"
 
-    user.objects.create_user(
+    django_user_model.objects.create_user(
         username=username,
         password=password,
-        email="<EMAIL>",
+        role="admin",
     )
     response = client.post(
-        "/auth/login/",
-        {"username": username, "password": password},
+        "/users/token",
+        {
+            "username": username,
+            "password": password
+        },
         format="json",
     )
 
-    return response.data["token"]
+    return response.data["access"]

@@ -29,6 +29,7 @@ class AdsDetailView(RetrieveAPIView):
 class AdsCreateView(CreateAPIView):
     queryset = Ads.objects.all()
     serializer_class = AdsSerializer
+    permission_classes = [IsAuthenticated]
 
 class AdsUpdateView(UpdateAPIView):
     queryset = Ads.objects.all()

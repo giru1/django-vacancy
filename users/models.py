@@ -30,8 +30,8 @@ class User(AbstractUser):
     password = models.CharField(max_length=150)
     role = models.CharField(max_length=50, choices=ROLES, default='member')
     birth_date = models.DateField(null=True, blank=True)
-    email = models.EmailField(unique=True)
-    age = models.PositiveIntegerField()
+    email = models.EmailField(unique=True, null=True)
+    age = models.PositiveIntegerField(null=True)
     locations = models.ManyToManyField(Location)
 
     def __str__(self):

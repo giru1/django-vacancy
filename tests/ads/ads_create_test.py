@@ -1,37 +1,38 @@
 import pytest
 
-from ads.models import Ads
 
 @pytest.mark.django_db
-def test_ads_list(client, token):
+def test_create_ads(client, token, user, category):
+
     expected = {
-        "id": "1",
-        "name": "Test Ad",
-        "author": 1,
-        "price": 100,
+        "id": 1,
+        "name": "Test Advertisement",
+        "author": user.id,
+        "price": 100.0,
         "description": "This is a test ad.",
         "is_published": True,
         "image": None,
-        "category": 1
+        "category": category.id
     }
 
     data = {
-        "name": "Test Ad",
-        "author": 1,
-        "price": 100,
+        "name": "Test Advertisement",
+        "author": user.id,
+        "price": 100.0,
         "description": "This is a test ad.",
         "is_published": True,
-        "image": None,
-        "category": 1
+        "category": category.id
     }
 
-
-    response = client.get("/ads/create/",
-                          data=data,
+    response = client.post("/ads/create",
+                          data,
                           content_type="application/json",
                           HTTP_AUTHORIZATION="Bearer " + token
                           )
 
+    # print(response.data)
+
+    print(response.json())
 
 
     assert response.status_code == 201
